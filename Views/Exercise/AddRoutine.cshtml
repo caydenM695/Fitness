@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Fitness.Models.Exercise
+
+@{
+    ViewData["Title"] = "Exercise Record";
+}
+
+<h2>Exercise Record</h2>
+
+<form asp-action="SaveExercise" method="post">
+    <div class="form-group">
+        <label asp-for="dateRecorded">Date Recorded</label>
+        <input asp-for="dateRecorded" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="distanceRan">Distance Ran (in miles)</label>
+        <input asp-for="distanceRan" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="time">Time (in hours)</label>
+        <input asp-for="time" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="weightBenched">Weight Benched (in lbs)</label>
+        <input asp-for="weightBenched" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="weightDeadlift">Weight Deadlift (in lbs)</label>
+        <input asp-for="weightDeadlift" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="weightCurl">Weight Curl (in lbs)</label>
+        <input asp-for="weightCurl" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
