@@ -1,0 +1,34 @@
+﻿<h2>Your Exercises</h2>
+
+@if (ViewBag.UserExercises != null && ViewBag.UserExercises.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date Recorded</th>
+                <th>Distance Ran</th>
+                <th>Time</th>
+                <th>Weight Benched</th>
+                <th>Weight Deadlift</th>
+                <th>Weight Curl</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var exercise in ViewBag.UserExercises)
+            {
+                <tr>
+                    <td>@exercise.dateRecorded.ToShortDateString()</td>
+                    <td>@exercise.distanceRan</td>
+                    <td>@exercise.time</td>
+                    <td>@exercise.weightBenched</td>
+                    <td>@exercise.weightDeadlift</td>
+                    <td>@exercise.weightCurl</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No exercises found.</p>
+}

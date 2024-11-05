@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Fitness.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Data
@@ -9,5 +10,7 @@ namespace Fitness.Data
             : base(options)
         {
         }
+
+        public DbSet<Exercise> Exercises { get; set; }
     }
 }

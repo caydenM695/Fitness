@@ -14,6 +14,7 @@ namespace Fitness.Controllers
         public decimal? distanceRan { get; set; }
 
         [Display(Name = "Time (in hours)")]
+        [Required(ErrorMessage = "Time is required.")]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter a valid time.")]
         public decimal time { get; set; }
 
