@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Weight Progress Graph";
+    var dates = ViewBag.Dates as List<string>;
+    var weights = ViewBag.Weights as List<double?>;
+}
+
+<h2>Weight Progress Graph</h2>
+
+<canvas id="weightChart" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare the data for the graph
+    const dates = @Html.Raw(Json.Serialize(dates));
+    const weights = @Html.Raw(Json.Serialize(weights));
+
+    // Create the weight graph
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const weightChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Weight (lbs)',
+                data: weights,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                borderWidth: 3,
+                spanGaps: true // Allow gaps for null values
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Weight (lbs)'
+                    },
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,100 @@
+﻿@{
+    var dates = ViewBag.Dates as List<string>;
+    var exerciseTypes = new List<string> { "DistanceRan", "WeightBenched", "WeightDeadlift", "WeightCurl" };
+    var initialExerciseData = ViewBag.MetricData as List<decimal>;
+    var averageExerciseData = ViewBag.AverageMetricData as decimal?;
+}
+
+<h2>Exercise Progress - Last 7 Days</h2>
+
+<!-- Dropdown to select exercise type -->
+<select id="exerciseSelect" onchange="getExerciseData()">
+    @foreach (var exercise in exerciseTypes)
+    {
+        <option value="@exercise">@exercise</option>
+    }
+</select>
+
+<canvas id="exerciseChart" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare the initial data from the server-side
+    let dates = @Html.Raw(Json.Serialize(dates));
+    let initialExerciseData = @Html.Raw(Json.Serialize(initialExerciseData));
+    let initialExerciseLabel = "DistanceRan";  // Default to "DistanceRan" as per method
+
+    let exerciseChart;
+
+    // Function to create or update the chart with new data
+    function createChart(exerciseData, exerciseLabel) {
+        const ctx = document.getElementById('exerciseChart').getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (exerciseChart) {
+            exerciseChart.destroy();
+        }
+
+        // Create new chart with selected exercise data
+        exerciseChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: exerciseLabel,
+                    data: exerciseData,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: exerciseLabel
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Function to fetch exercise data when a new exercise type is selected
+    function getExerciseData() {
+        const selectedExercise = document.getElementById('exerciseSelect').value;
+
+        fetch(`/Exercise/ViewExerciseGraphData?metric=${selectedExercise}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the chart and goal status dynamically
+                createChart(data.metricData, data.metricLabel);
+                document.getElementById('goalStatus').innerText = data.goalStatus || "No Goal Set"; // Optional: Set goal status
+                document.getElementById('averageExerciseData').innerText = data.averageMetricData;
+                document.getElementById('exerciseGoalValue').innerText = data.goalValue || "No Goal Set";
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    }
+
+    // Initialize chart with the default exercise type (DistanceRan)
+    window.onload = function () {
+        document.getElementById('exerciseSelect').value = initialExerciseLabel;
+        getExerciseData();  // Load the default data (DistanceRan)
+    };
+</script>

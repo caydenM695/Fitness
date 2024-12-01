@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fitness.Controllers
+namespace Fitness.Models
 {
     public class ExerciseViewModel
     {

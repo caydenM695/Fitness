@@ -1,0 +1,106 @@
+﻿@{
+    var dates = ViewBag.Dates as List<string>;
+    var mineralTypes = new List<string> { "Calories", "Carbohydrates", "Protein", "Fats", "Sugar", "Sodium", "Fiber", "Cholesterol" };
+    var initialMineralData = ViewBag.Calories as List<int>;
+    var goalStatus = ViewBag.GoalStatus as string;
+    var averageMineralData = ViewBag.one as double?;
+    var goalValue = ViewBag.GoalValue as int?;
+}
+
+<h2>Mineral Intake - Last 7 Days</h2>
+
+<p id="goalStatus">@goalStatus</p>
+<p>Average: <span id="averageMineralData">@averageMineralData</span></p>
+<p>Goal: <span id="goalValue">@goalValue</span></p>
+
+<!-- Dropdown to select mineral type -->
+<select id="mineralSelect" onchange="getMineralData()">
+    @foreach (var mineral in mineralTypes)
+    {
+        <option value="@mineral">@mineral</option>
+    }
+</select>
+
+<canvas id="mineralChart" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare the initial data from the server-side
+    let dates = @Html.Raw(Json.Serialize(dates));
+    let initialMineralData = @Html.Raw(Json.Serialize(initialMineralData));
+    let initialMineralLabel = "Fats";  // Default to "Fats" as per method
+
+    let mineralChart;
+
+    // Function to create or update the chart with new data
+    function createChart(mineralData, mineralLabel) {
+        const ctx = document.getElementById('mineralChart').getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (mineralChart) {
+            mineralChart.destroy();
+        }
+
+        // Create new chart with selected mineral data
+        mineralChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: mineralLabel,
+                    data: mineralData,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: mineralLabel
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Function to fetch mineral data when a new mineral is selected
+    function getMineralData() {
+        const selectedMineral = document.getElementById('mineralSelect').value;
+
+        fetch(`/Exercise/ViewGraphData?mineral=${selectedMineral}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the chart and goal status dynamically
+                createChart(data.mineralData, data.mineralLabel);
+                document.getElementById('goalStatus').innerText = data.goalStatus;
+                document.getElementById('averageMineralData').innerText = data.averageMineralData;
+                document.getElementById('goalValue').innerText = data.goalValue;
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    }
+
+    // Initialize chart with the default mineral (Fats)
+    window.onload = function () {
+        document.getElementById('mineralSelect').value = initialMineralLabel;
+        getMineralData();  // Load the default data (Fats)
+    };
+</script>

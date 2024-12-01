@@ -1,0 +1,59 @@
+﻿@model Fitness.Models.MealPlanViewModel
+
+@{
+    ViewData["Title"] = $"Intake Value for {ViewBag.Today}";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="SaveIntake" method="post">
+    <div class="form-group">
+        <label asp-for="Calories"></label>
+        <input asp-for="Calories" class="form-control" />
+        <span asp-validation-for="Calories" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Carbohydrates"></label>
+        <input asp-for="Carbohydrates" class="form-control" />
+        <span asp-validation-for="Carbohydrates" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Protein"></label>
+        <input asp-for="Protein" class="form-control" />
+        <span asp-validation-for="Protein" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Fats"></label>
+        <input asp-for="Fats" class="form-control" />
+        <span asp-validation-for="Fats" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Sugar"></label>
+        <input asp-for="Sugar" class="form-control" />
+        <span asp-validation-for="Sugar" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Sodium"></label>
+        <input asp-for="Sodium" class="form-control" />
+        <span asp-validation-for="Sodium" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Fiber"></label>
+        <input asp-for="Fiber" class="form-control" />
+        <span asp-validation-for="Fiber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Cholesterol"></label>
+        <input asp-for="Cholesterol" class="form-control" />
+        <span asp-validation-for="Cholesterol" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Intake</button>
+</form>

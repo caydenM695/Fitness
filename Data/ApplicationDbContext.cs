@@ -12,5 +12,9 @@ namespace Fitness.Data
         }
 
         public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<MealPlan> MealPlans { get; set; }
+        public DbSet<UserMeal> UserIntakes { get; set; }
+        public DbSet<UserWeight> UserWeights { get; set; }
+
     }
 }

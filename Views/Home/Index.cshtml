@@ -1,9 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div style="width:100%; height:700px; background-color:lightgray; padding-left:10px">
+    <div class="text-left" style="color: white">
+        <h1 class="display-4">Fitness App</h1>
+        <a asp-controller="Admin" asp-action="GetAllUsers">View Users</a>
 
-<div class="text-center">
-    <h1 class="display-4">Fitness App</h1>
-    <a asp-controller="Exercise" asp-action="AddRoutine">Add Routine</a>
-    <a asp-controller="Exercise" asp-action="ViewExercises">View History</a>
+        <ul style="list-style:none; width:150px;">
+            <li class="nav-item" style="padding: 10px;">
+                <a style="color:white;" class="nav-link text-dark btn btn-primary" asp-controller="Exercise" asp-action="ViewGraph">Meal Graph</a>
+            </li>
+            <li class="nav-item" style="padding: 15px;">
+                <a style="color:white;" class="nav-link text-dark btn btn-primary" asp-controller="Exercise" asp-action="ViewWeightGraph">Weight Graph</a>
+            </li>
+            <li class="nav-item" style="padding: 15px;">
+                <a style="color:white;" class="nav-link text-dark btn btn-primary" asp-controller="Exercise" asp-action="ViewExerciseGraph">Exercise Graph</a>
+            </li>
+        </ul>
+
+
+
+    </div>
 </div>
